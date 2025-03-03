@@ -29,14 +29,14 @@ The system consists of two microservices:
 |----------|--------|-------------|
 | `/orders/place` | `POST` | Place a new order |
 | `/orders/confirm/{orderId}` | `PUT` | Confirm an order |
-| `/backup/deleteAll` | `DELETE` | Delete all stored events |
+| `/backup/deleteAll` | `POST` | Delete all stored events |
 | `/backup/recreateAllEvents` | `POST` | Recreate all events from Kafka logs |
 
 ### Shipping Service
 | Endpoint | Method | Description |
 |----------|--------|-------------|
-| `/shipping/{orderId}/ship` | `PUT` | Update an order to `SHIPPED` state |
-| `/shipping/{orderId}/deliver` | `PUT` | Update an order to `DELIVERED` state |
+| `/shipping/{orderId}/ship` | `POST` | Update an order to `SHIPPED` state |
+| `/shipping/{orderId}/deliver` | `POST` | Update an order to `DELIVERED` state |
 
 ## Technologies Used
 - **Spring Boot** (lombok, jackson, Kafka, Data MongoDB)
