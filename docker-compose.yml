@@ -1,0 +1,61 @@
+services:
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: kafka
+    ports:
+      - "9092:9092"
+      - "9093:9093"
+    environment:
+      CLUSTER_ID: m1Ze6AjGRwqarkcxJscgyQ
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: controller,broker
+      KAFKA_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@localhost:9093
+      KAFKA_LOG_DIRS: /var/lib/kafka/data
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    volumes:
+      - /var/lib/kafka/data
+    # networks:
+    #   - kafka-network
+
+
+#  kafka-ui:
+#    image: provectuslabs/kafka-ui
+#    container_name: order_kafka-ui
+#    ports:
+#      - 8083:8080
+#    environment:
+#      - DYNAMIC_CONFIG_ENABLED=true
+
+  mongodb:
+    image: mongo:4.2.3-bionic
+    container_name: order-mongodb
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_DATABASE=ordering
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+    volumes:
+      # seeding scripts
+      #- ./mongo-entrypoint:/docker-entrypoint-initdb.d
+      # named volumes
+      - mongodb:/data/db
+      #- mongoconfig:/data/configdb
+    # networks:
+    #   - kafka-network
+
+# networks:
+#   kafka-network:
+#     driver: bridge
+
+volumes:
+
+  # default dir on Ubuntu: /var/lib/docker/volumes
+  mongodb:
+  #mongoconfig:
+

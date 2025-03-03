@@ -1,0 +1,26 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: shipping
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: ordering
+      username: admin
+      password: admin
+      authentication-database: admin
+      auto-index-creation: true
+  kafka:
+    bootstrap-servers: localhost:9092
+    event:
+      topicName: order-events
+    consumer:
+      group-id: shipping-service
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      auto-offset-reset: earliest
+      properties:
+        spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
+        spring.json.trusted.packages: "*"

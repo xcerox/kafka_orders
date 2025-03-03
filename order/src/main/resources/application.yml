@@ -1,0 +1,60 @@
+server:
+  port: 8081
+
+spring:
+  output:
+    ansi:
+      enabled=ALWAYS:
+  application:
+    name: order
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: ordering
+      username: admin
+      password: admin
+      authentication-database: admin
+      auto-index-creation: true
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      acks: all
+      retries: 3
+      batch-size: 16384
+      linger-ms: 1
+      buffer-memory: 33554432
+      properties:
+        spring.json.add.type.headers: true
+
+    consumer:
+      group-id: reply
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      properties:
+        spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+        spring.json.trusted.packages: "*"
+
+
+    properties:
+      security.protocol: PLAINTEXT
+    template:
+      default-topic: order-events
+
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  charset:
+    console: UTF-8
+  level:
+    root: info
+
+order:
+  event:
+    topicName: order-events
+
